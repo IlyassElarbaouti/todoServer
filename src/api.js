@@ -17,6 +17,8 @@ app.use(
   })
 );
 app.use(bodyParser.json());
+
+// base url : https://todoexpressapi.netlify.app/.netlify/functions/api
 app.use('/.netlify/functions/api',router)
 
 //get all todos
