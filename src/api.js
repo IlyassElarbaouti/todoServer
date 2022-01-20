@@ -27,8 +27,8 @@ app.get("/", (req, res) => res.status(200).json(todos));
 //get todo by index
 app.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todoRes = todos.filter((todo) => todo.id == id);
-  if (todoRes.length !== 0) {
+  const todoRes = todos.find((todo) => todo.id == id);
+  if (todoRes) {
     res.status(200).json(todoRes);
   } else {
     res.status(404, "The task is not found").send();
@@ -50,7 +50,7 @@ app.put("/:id", (req, res) => {
   const targetedIndex = todos.findIndex((todo) => todo.id === id);
   if (targetedIndex !== -1) {
     todos[targetedIndex] = req.body;
-    res.status(204).send();
+    res.status(204).send(todos[targetedIndex]);
   } else {
     res.status(404, "The task is not found").send();
   }
