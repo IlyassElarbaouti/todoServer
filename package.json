@@ -2,10 +2,11 @@
   "name": "todoserver",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./server.js"
+    "start": "NODE_ENV=development ./node_modules/.bin/netlify-lambda serve src",
+    "build": "NODE_ENV=production ./node_modules/.bin/netlify-lambda build src"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +15,9 @@
     "body-parser": "^1.19.1",
     "express": "^4.17.2",
     "nodemon": "^2.0.15"
+  },
+  "dependencies": {
+    "netlify-lambda": "^2.0.15",
+    "serverless-http": "^2.7.0"
   }
 }
