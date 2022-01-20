@@ -1,15 +1,17 @@
 const express = require("express");
-const serverless = require('serverless-http')
-const app = express();
 const bodyParser = require("body-parser");
-
+const port = 9000;
+const app = express();
 let todos = [
-  { label: "test2", id: 0, checked: true },
-  { label: "test3", id: 1, checked: false },
+  { label: "test0", id: 0, checked: true },
+  { label: "test1", id: 1, checked: false },
+  { label: "test2", id: 2, checked: false },
+  { label: "test3", id: 3, checked: false },
+  { label: "test4", id: 4, checked: true },
+  { label: "test5", id: 5, checked: false },
 ];
 let nextId =
   todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
-const router = express.Router()
 
 app.use(
   bodyParser.urlencoded({
@@ -18,17 +20,13 @@ app.use(
 );
 app.use(bodyParser.json());
 
-// base url : https://todoexpressapi.netlify.app/.netlify/functions/api
-app.use('/.netlify/functions/api',router)
-
 //get all todos
-router.get("/", (req, res) => res.status(200).json(todos));
-
+app.get("/", (req, res) => res.status(200).json(todos));
 //get todo by index
-router.get("/:id", (req, res) => {
+app.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
-  const todoRes = todos.find((todo) => todo.id == id);
-  if (todoRes) {
+  const todoRes = todos.filter((todo) => todo.id == id);
+  if (todoRes.length !== 0) {
     res.status(200).json(todoRes);
   } else {
     res.status(404, "The task is not found").send();
@@ -36,7 +34,7 @@ router.get("/:id", (req, res) => {
 });
 
 // add new todo
-router.post("/", (req, res) => {
+app.post("/", (req, res) => {
   var newTodo = req.body;
   newTodo.id = nextId;
   nextId = newTodo.id+1;
@@ -45,7 +43,7 @@ router.post("/", (req, res) => {
 });
 
 // edit existant todo
-router.put("/:id", (req, res) => {
+app.put("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const targetedIndex = todos.findIndex((todo) => todo.id === id);
   if (targetedIndex !== -1) {
@@ -55,9 +53,8 @@ router.put("/:id", (req, res) => {
     res.status(404, "The task is not found").send();
   }
 });
-
 //delete todo
-router.delete("/:id", (req, res) => {
+app.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const targetedIndex = todos.findIndex((todo) => todo.id === id);
   if (todos.some((todo) => todo.id == id)) {
@@ -67,5 +64,4 @@ router.delete("/:id", (req, res) => {
     res.status(404, "The task is not found").send();
   }
 });
-
-module.exports.handler = serverless(app)
+app.listen(port);
