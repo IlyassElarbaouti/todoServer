@@ -13,6 +13,8 @@ let todos = [
 let nextId =
   todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
 
+app.use(cors());
+
 app.use(
   bodyParser.urlencoded({
     extended: false,
@@ -37,7 +39,7 @@ app.get("/:id", (req, res) => {
 app.post("/", (req, res) => {
   var newTodo = req.body;
   newTodo.id = nextId;
-  nextId = newTodo.id+1;
+  nextId = newTodo.id + 1;
   todos.push(newTodo);
   res.status(201).json(newTodo);
 });
@@ -58,7 +60,7 @@ app.delete("/:id", (req, res) => {
   const id = parseInt(req.params.id);
   const targetedIndex = todos.findIndex((todo) => todo.id === id);
   if (todos.some((todo) => todo.id == id)) {
-    todos.splice(targetedIndex,1);
+    todos.splice(targetedIndex, 1);
     res.status(200).send();
   } else {
     res.status(404, "The task is not found").send();
