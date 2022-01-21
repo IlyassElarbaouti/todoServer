@@ -6,10 +6,10 @@ const app = express();
 let todos = [
   { label: "test0", id: 0, checked: true },
   { label: "test1", id: 1, checked: false },
-  { label: "test2", id: 2, checked: false },
+  { label: "test2", id: 2, checked: true },
   { label: "test3", id: 3, checked: false },
-  { label: "test4", id: 4, checked: true },
-  { label: "test5", id: 5, checked: false },
+  { label: "test4", id: 4, checked: false },
+  { label: "test5", id: 5, checked: true },
 ];
 let nextId =
   todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
@@ -38,7 +38,7 @@ app.get("/:id", (req, res) => {
 
 // add new todo
 app.post("/", (req, res) => {
-  var newTodo = req.body;
+  let newTodo = req.body;
   newTodo.id = nextId;
   nextId = newTodo.id + 1;
   todos.push(newTodo);
