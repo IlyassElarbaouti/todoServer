@@ -25,6 +25,7 @@ app.use(bodyParser.json());
 
 //get all todos
 app.get("/", (req, res) => res.status(200).json(todos));
+
 //get todo by index
 app.get("/:id", (req, res) => {
   const id = parseInt(req.params.id);
