@@ -75,4 +75,12 @@ app.delete("/", (req, res) => {
   res.status(200).send();
 });
 
+//toggle all checked
+app.put('/', (req, res) => {
+  todos.every((todo) => todo.checked)
+    ? todos.forEach((todo) => (todo.checked = false))
+    : todos.forEach((todo) => (todo.checked = true));
+  res.status(200).send(todos);
+})
+
 app.listen(port);
