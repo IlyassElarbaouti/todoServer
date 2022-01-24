@@ -68,4 +68,11 @@ app.delete("/:id", (req, res) => {
     res.status(404, "The task is not found").send();
   }
 });
+
+//delete all done
+app.delete("/", (req, res) => {
+  todos=todos.filter((todo) => !todo.checked);
+  res.status(200).send();
+});
+
 app.listen(port);
