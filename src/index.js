@@ -17,25 +17,25 @@ app.use(
 app.use(bodyParser.json());
 
 //get all todos
-app.get("/", todoController.getAllTodos());
+app.get("/", todoController.getAllTodos);
 
 //get todo by index
-app.get("/:id", todoController.getTodoById());
+app.get("/:id", todoController.getTodoById);
 
 // add new todo
-app.post("/", todoController.addNewTodo());
+app.post("/", todoController.addNewTodo);
 
 // edit existant todo
-app.put("/:id", todoController.editTodo());
+app.put("/:id", todoController.editTodo);
 
 //delete todo
-app.delete("/:id", todoController.deleteTodo());
+app.delete("/:id", todoController.deleteTodo);
 
 //delete all done
-app.delete("/", todoController.deleteAllDone());
+app.delete("/", todoController.deleteAllDone);
 
 //toggle all checked
-app.put("/", todoController.toggleAllChecked());
+app.put("/", todoController.toggleAllChecked);
 
 app.listen(port);
 

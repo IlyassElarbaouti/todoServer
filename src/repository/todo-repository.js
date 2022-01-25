@@ -9,14 +9,13 @@ class TodoRepository {
       { label: "test5", id: 5, checked: true },
     ];
     this.nextId =
-      this.todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
+      this.todos.length !== 0
+        ? Math.max(...todos.map((todos) => todos.id)) + 1
+        : 0;
+    this.createTodo = this.createTodo.bind(this);
+    this.deleteAllDone = this.deleteAllDone.bind(this);
+    this.toggleAllChecked = this.toggleAllChecked.bind(this)
   }
-
-  //increase nextId
-  increaseId(newTodo) {
-    this.nextId = newTodo.id+1
-  }
-
   //get all todos
   getAllTodos() {
     return this.todos;
@@ -33,18 +32,25 @@ class TodoRepository {
   }
 
   // add todo
-  addTodo(newTodo) {
+  createTodo(todo) {
+    const newTodo = { ...todo, id: this.nextId++ };
     this.todos.push(newTodo);
   }
 
   // edit existant todo
-  editTodo(index, newTodo) {
-    this.todos[index] = newTodo;
+  editTodo(newTodo, id) {
+    const index = this.todos.findIndex((todo) => todo.id == id);
+    this.todos[index] = { ...newTodo, id };
   }
 
   // delete todo
-  deleteTodo(targetedIndex) {
-    this.todos.splice(targetedIndex, 1);
+  deleteTodo(id) {
+    const index = this.todos.findIndex((todo) => todo.id);
+
+    if (index === -1) {
+      throw new Error("Todo is not found");
+    }
+    this.todos.splice(index, 1);
   }
 
   // delete all done todos
@@ -54,9 +60,10 @@ class TodoRepository {
 
   //toggle all checked
   toggleAllChecked() {
-    this.todos.every((todo) => todo.checked)
-      ? this.todos.forEach((todo) => (todo.checked = false))
-      : this.todos.forEach((todo) => (todo.checked = true));
+    const isAllChecked = this.todos.every((todo) => todo.checked);
+    this.todos.forEach((todo) => {
+      todo.checked = !isAllChecked;
+    });
   }
 }
 module.exports = new TodoRepository();

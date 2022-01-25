@@ -3,11 +3,25 @@ const todoRepository = require("../repository/todo-repository");
 class TodoController {
   constructor() {
     this.todoRepository = todoRepository;
+
+    this.getAllTodos = this.getAllTodos.bind(this);
+    this.getTodoById = this.getTodoById.bind(this);
+    this.addNewTodo = this.addNewTodo.bind(this);
+    this.editTodo = this.editTodo.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+    this.deleteAllTodos = this.deleteAllTodos.bind(this);
+    this.toggleAllChecked = this.toggleAllChecked.bind(this);
   }
 
   // get all todos
   getAllTodos(req, res) {
-    res.status(200).json(this.todoRepository.getAllTodos.bind(this.todoRepository));
+    try {
+      res
+        .status(200)
+        .json(this.todoRepository.getAllTodos.bind(this.todoRepository));
+    } catch (e) {
+      res.status(404, e.message).send();
+    }
   }
 
   // get todo by id
@@ -23,22 +37,24 @@ class TodoController {
 
   // add new todo
   addNewTodo(req, res) {
-    let newTodo = req.body;
-    newTodo.id = this.todoRepository.nextId;
-    this.todoRepository.increaseId.bind(this.todoRepository);
-    this.todoRepository.addTodo(newTodo).bind(this.todoRepository);
-    res.status(201).json(newTodo);
+    const newTodo = req.body;
+    try {
+      this.todoRepository.createTodo(newTodo);
+      res.status(201).json(newTodo);
+    } catch (e) {
+      res.status(404, e.message).send();
+    }
   }
 
   // edit existant todo
   editTodo(req, res) {
     const id = parseInt(req.params.id);
-    const targetedIndex = this.todoRepository.getTodoIndex(id);
-    if (targetedIndex !== -1) {
-      this.todoRepository.todos[targetedIndex] = req.body;
-      res.status(204).send(this.todoRepository.todos[targetedIndex]);
-    } else {
-      res.status(404, "The task is not found").send();
+    const todoToEdit = req.body;
+    try {
+      const newTodo = this.todoRepository.editTodo(todoToEdit, id);
+      res.status(204).send(newTodo);
+    } catch (e) {
+      res.status(404, e.message).send();
     }
   }
 
@@ -56,18 +72,22 @@ class TodoController {
 
   //delete all done
   deleteAllDone(req, res) {
-    this.todoRepository.todos = this.todoRepository.todos.filter(
-      (todo) => !todo.checked
-    );
-    res.status(200).send();
+    try {
+      this.todoRepository.deleteAllDone();
+      res.status(200).send();
+    } catch (e) {
+      res.status(404, e.message).send();
+    }
   }
 
   //toggle all checked
   toggleAllChecked(req, res) {
-    this.todoRepository.todos.every((todo) => todo.checked)
-      ? this.todoRepository.todos.forEach((todo) => (todo.checked = false))
-      : this.todoRepository.todos.forEach((todo) => (todo.checked = true));
-    res.status(200).send(this.todoRepository.todos);
+    try {
+      this.todoRepository.toggleAllChecked();
+      res.status(200).send(this.todoRepository.todos);
+    } catch (e) {
+      res.status(404, e.message).send();
+    }
   }
 }
-module.exports = new TodoController()
+module.exports = new TodoController();
