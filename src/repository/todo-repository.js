@@ -1,4 +1,4 @@
-class todoRepository {
+class TodoRepository {
   constructor() {
     this.todos = [
       { label: "test0", id: 0, checked: true },
@@ -9,7 +9,7 @@ class todoRepository {
       { label: "test5", id: 5, checked: true },
     ];
     this.nextId =
-      todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
+      this.todos.length !== 0 ? Math.max(...todos.map((todos) => todos.id)) + 1 : 0;
   }
 
   //increase nextId
@@ -59,4 +59,4 @@ class todoRepository {
       : this.todos.forEach((todo) => (todo.checked = true));
   }
 }
-module.exports = new todoRepository();
+module.exports = new TodoRepository();
