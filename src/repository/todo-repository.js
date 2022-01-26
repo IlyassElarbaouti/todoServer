@@ -12,8 +12,6 @@ class TodoRepository {
       this.todos.length !== 0
         ? Math.max(...this.todos.map((todos) => todos.id)) + 1
         : 0;
-    
-    this.getAllTodos = this.getAllTodos.bind(this)
   }
   //get all todos
   getAllTodos() {
@@ -40,7 +38,7 @@ class TodoRepository {
   editTodo(newTodo, id) {
     const index = this.todos.findIndex((todo) => todo.id == id);
     this.todos[index] = { ...newTodo, id };
-    return this.todos[index]
+    return this.todos[index];
   }
 
   // delete todo

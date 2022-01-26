@@ -1,4 +1,4 @@
-const  todoRepository  = require("../controller/todo-controller");
+const  todoRepository  = require("../controller/todo-controller.js");
 
 class TodoService {
   constructor() {
@@ -7,7 +7,7 @@ class TodoService {
 
   getAllTodos(res) {
     try {;
-    res.status(200).json(this.todoRepository.getAllTodos());
+    res.status(200).json(this.todoRepository.getAllTodos.bind(this));
     } catch (e) {
       res.status(404, e.message).send();
     }
