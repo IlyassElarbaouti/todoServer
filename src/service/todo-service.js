@@ -3,11 +3,13 @@ const  todoRepository  = require("../controller/todo-controller.js");
 class TodoService {
   constructor() {
     this.todoRepository = todoRepository;
+    this.getAllTodos = this.getAllTodos.bind(this);
   }
 
   getAllTodos(res) {
-    try {;
-    res.status(200).json(this.todoRepository.getAllTodos.bind(this));
+    try {
+      console.log(this.todoRepository);
+    res.status(200).json(this.todoRepository.todos);
     } catch (e) {
       res.status(404, e.message).send();
     }

@@ -1,7 +1,7 @@
-const TodoService = require("../service/todo-service");
+const todoService = require("../service/todo-service");
 class TodoController {
   constructor() {
-    this.todoService = TodoService;
+    this.todoService = todoService;
   }
 
   // get all todos

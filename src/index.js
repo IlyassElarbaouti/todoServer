@@ -17,7 +17,7 @@ app.use(
 app.use(bodyParser.json());
 
 //get all todos
-app.get("/", todoController.getAllTodos.bind(todoController));
+app.get("/",(req,res)=> todoController.getAllTodos(req,res));
 
 //get todo by index
 app.get("/:id", todoController.getTodoById.bind(todoController));
