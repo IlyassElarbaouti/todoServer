@@ -18,7 +18,7 @@ class TodoController {
     try {
       res
         .status(200)
-        .json(this.todoRepository.getAllTodos.bind(this.todoRepository));
+        .json(this.todoRepository.getAllTodos());
     } catch (e) {
       res.status(404, e.message).send();
     }
@@ -29,7 +29,11 @@ class TodoController {
     const id = parseInt(req.params.id);
     const todoRes = this.todoRepository.getTodoById();
     if (todoRes) {
-      res.status(200).json(todoRes);
+      try {
+        res.status(200).json(todoRes);
+      } catch (e) {
+        res.status(404, e.message).send();
+      }
     } else {
       res.status(404, "The task is not found").send();
     }
@@ -63,10 +67,15 @@ class TodoController {
     const id = parseInt(req.params.id);
     const targetedIndex = this.todoRepository.getTodoIndex(id);
     if (this.todoRepository.todos.some((todo) => todo.id == id)) {
-      this.todoRepository.todos.splice(targetedIndex, 1);
-      res.status(200).send();
+      try {    
+        this.todoRepository.todos.splice(targetedIndex, 1);
+        res.status(200).send();
+      }
+      catch (e) {   
+        res.status(404, e.message).send();
+      }
     } else {
-      res.status(404, "The task is not found").send();
+      res.status(404, e.message).send();
     }
   }
 

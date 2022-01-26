@@ -14,7 +14,10 @@ class TodoRepository {
         : 0;
     this.createTodo = this.createTodo.bind(this);
     this.deleteAllDone = this.deleteAllDone.bind(this);
-    this.toggleAllChecked = this.toggleAllChecked.bind(this)
+    this.toggleAllChecked = this.toggleAllChecked.bind(this);
+    this.getAllTodos = this.getAllTodos.bind(this);
+    this.editTodo = this.editTodo.bind(this);
+    this.getTodoIndex = this.getTodoIndex.bind(this)
   }
   //get all todos
   getAllTodos() {
@@ -41,11 +44,12 @@ class TodoRepository {
   editTodo(newTodo, id) {
     const index = this.todos.findIndex((todo) => todo.id == id);
     this.todos[index] = { ...newTodo, id };
+    return this.todos[index]
   }
 
   // delete todo
   deleteTodo(id) {
-    const index = this.todos.findIndex((todo) => todo.id);
+    const index = this.todos.findIndex((todo) => todo.id == id);
 
     if (index === -1) {
       throw new Error("Todo is not found");
