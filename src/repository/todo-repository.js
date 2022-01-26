@@ -1,5 +1,3 @@
-const { todoRepository } = require("../service/todo-service");
-
 class TodoRepository {
   constructor() {
     this.todos = [
@@ -66,5 +64,5 @@ class TodoRepository {
     });
   }
 }
-const todoRepository = new todoRepository()
+const todoRepository = new TodoRepository()
 module.exports = todoRepository;
