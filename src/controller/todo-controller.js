@@ -24,7 +24,7 @@ class TodoController {
         res.status(404, e.message).send();
       }
     } else {
-      res.status(404, "no todo to show").send();
+      res.status(400, "bad request").send();
     }
   }
 
