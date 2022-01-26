@@ -51,12 +51,12 @@ class TodoController {
   editTodo(req, res) {
     const id = parseInt(req.params.id);
     const todoToEdit = req.body;
-    const newTodoKeys = Object.keys(req.body);
+    const newTodoKeys = Object.keys(todoToEdit);
     if (
-      newTodoKeys.length === 2 &&
-      typeof newTodo.checked === "boolean" &&
-      newTodo.label &&
-      typeof id === "number" &&
+      newTodoKeys.length == 2 &&
+      typeof todoToEdit.checked == "boolean" &&
+      todoToEdit.label &&
+      typeof id == "number" &&
       this.todoService.getTodoById(id)
     ) {
       try {
