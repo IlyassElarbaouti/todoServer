@@ -36,7 +36,7 @@ class TodoController {
 
   //delete all done
   deleteAllDone(req, res) {
-    this.todoService.deleteAllTodos(res);
+    this.todoService.deleteAllDone(res);
   }
 
   //toggle all checked
