@@ -9,7 +9,7 @@ class TodoController {
     this.addNewTodo = this.addNewTodo.bind(this);
     this.editTodo = this.editTodo.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
-    this.deleteAllTodos = this.deleteAllTodos.bind(this);
+    this.deleteAllDone = this.deleteAllDone.bind(this);
     this.toggleAllChecked = this.toggleAllChecked.bind(this);
   }
 
