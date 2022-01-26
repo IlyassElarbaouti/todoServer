@@ -27,7 +27,7 @@ class TodoController {
   // get todo by id
   getTodoById(req, res) {
     const id = parseInt(req.params.id);
-    const todoRes = this.todoRepository.getTodoById();
+    const todoRes = this.todoRepository.getTodoById(id);
     if (todoRes) {
       try {
         res.status(200).json(todoRes);
