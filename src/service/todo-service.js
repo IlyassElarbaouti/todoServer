@@ -1,4 +1,4 @@
-const  todoRepository  = require("../controller/todo-controller.js");
+const  todoRepository  = require("../repository/todo-repository.js");
 
 class TodoService {
   constructor() {
