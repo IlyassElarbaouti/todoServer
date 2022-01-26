@@ -13,10 +13,10 @@ class TodoService {
     }
   }
 
-  getTodoById(todoRes, res) {
+  getTodoById(id, res) {
+    const todoRes = this.todoRepository.getTodoById(id);
     if (todoRes) {
       try {
-        const todoRes = this.todoRepository.getTodoById(id);
         res.status(200).json(todoRes);
       } catch (e) {
         res.status(404, e.message).send();

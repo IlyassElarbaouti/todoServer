@@ -21,7 +21,7 @@ class TodoController {
   // get todo by id
   getTodoById(req, res) {
     const id = parseInt(req.params.id);
-    this.todoService.getTodoById(todoRes,res)
+    this.todoService.getTodoById(id,res)
   }
 
   // add new todo
