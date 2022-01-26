@@ -8,6 +8,7 @@ class TodoRepository {
       { label: "test4", id: 4, checked: false },
       { label: "test5", id: 5, checked: true },
     ];
+    
     this.nextId =
       this.todos.length !== 0
         ? Math.max(...this.todos.map((todos) => todos.id)) + 1
@@ -32,6 +33,7 @@ class TodoRepository {
   createTodo(todo) {
     const newTodo = { ...todo, id: this.nextId++ };
     this.todos.push(newTodo);
+    return newTodo
   }
 
   // edit existant todo
@@ -61,7 +63,7 @@ class TodoRepository {
     const isAllChecked = this.todos.every((todo) => todo.checked);
     this.todos.forEach((todo) => {
       todo.checked = !isAllChecked;
-    });
+    })
   }
 }
 const todoRepository = new TodoRepository()

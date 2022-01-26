@@ -6,75 +6,32 @@ class TodoService {
     this.getAllTodos = this.getAllTodos.bind(this);
   }
 
-  getAllTodos(res) {
-    try {
-      console.log(this.todoRepository);
-    res.status(200).json(this.todoRepository.todos);
-    } catch (e) {
-      res.status(404, e.message).send();
-    }
+  getAllTodos() {
+    return this.todoRepository.getAllTodos()
+
   }
 
-  getTodoById(id, res) {
-    const todoRes = this.todoRepository.getTodoById(id);
-    if (todoRes) {
-      try {
-        res.status(200).json(todoRes);
-      } catch (e) {
-        res.status(404, e.message).send();
-      }
-    } else {
-      res.status(404, "The task is not found").send();
-    }
+  getTodoById(id) {
+    return this.todoRepository.getTodoById(id);
   }
 
-  addNewTodo(newTodo, res) {
-    try {
-      this.todoRepository.createTodo(newTodo);
-      res.status(201).json(newTodo);
-    } catch (e) {
-      res.status(404, e.message).send();
-    }
+  addNewTodo(newTodo) {
+    return this.todoRepository.createTodo(newTodo);
   }
 
-  editTodo(todoToEdit, id, res) {
-    try {
-      const newTodo = this.todoRepository.editTodo(todoToEdit, id);
-      res.status(204).send(newTodo);
-    } catch (e) {
-      res.status(404, e.message).send();
-    }
+  editTodo(todoToEdit, id) {
+    return this.todoRepository.editTodo(todoToEdit, id)
   }
 
-  deleteTodo(id, res) {
-    if (this.todoRepository.todos.some((todo) => todo.id == id)) {
-      try {
-        const targetedIndex = this.todoRepository.getTodoIndex(id);
-        this.todoRepository.todos.splice(targetedIndex, 1);
-        res.status(200).send();
-      } catch (e) {
-        res.status(404, e.message).send();
-      }
-    } else {
-      res.status(404, e.message).send();
-    }
+  deleteTodo(id) {
+    return this.todoRepository.deleteTodo(id)
   }
 
-  deleteAllDone(res) {
-    try {
-      this.todoRepository.deleteAllDone();
-      res.status(200).send();
-    } catch (e) {
-      res.status(404, e.message).send();
-    }
+  deleteAllDone() {
+    return this.todoRepository.deleteAllDone();
   }
-  toggleAllChecked(res) {
-    try {
-      this.todoRepository.toggleAllChecked();
-      res.status(200).send(this.todoRepository.todos);
-    } catch (e) {
-      res.status(404, e.message).send();
-    }
+  toggleAllChecked() {
+    return this.todoRepository.toggleAllChecked();
   }
 }
 
