@@ -10,14 +10,10 @@ class TodoRepository {
     ];
     this.nextId =
       this.todos.length !== 0
-        ? Math.max(...todos.map((todos) => todos.id)) + 1
+        ? Math.max(...this.todos.map((todos) => todos.id)) + 1
         : 0;
-    this.createTodo = this.createTodo.bind(this);
-    this.deleteAllDone = this.deleteAllDone.bind(this);
-    this.toggleAllChecked = this.toggleAllChecked.bind(this);
-    this.getAllTodos = this.getAllTodos.bind(this);
-    this.editTodo = this.editTodo.bind(this);
-    this.getTodoIndex = this.getTodoIndex.bind(this)
+    
+    this.getAllTodos = this.getAllTodos.bind(this)
   }
   //get all todos
   getAllTodos() {

@@ -1,20 +1,13 @@
-const { todoRepository } = require("../controller/todo-controller");
+const  todoRepository  = require("../controller/todo-controller");
 
 class TodoService {
   constructor() {
     this.todoRepository = todoRepository;
-    this.getAllTodos = this.getAllTodos.bind(this);
-    this.getTodoById = this.getTodoById.bind(this);
-    this.addNewTodo = this.addNewTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
-    this.deleteTodo = this.deleteTodo.bind(this);
-    this.deleteAllDone = this.deleteAllDone.bind(this);
-    this.toggleAllChecked = this.toggleAllChecked.bind(this);
   }
 
   getAllTodos(res) {
-    try {
-      res.status(200).json(this.todoRepository.getAllTodos());
+    try {;
+    res.status(200).json(this.todoRepository.getAllTodos());
     } catch (e) {
       res.status(404, e.message).send();
     }
