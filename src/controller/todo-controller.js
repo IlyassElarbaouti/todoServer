@@ -9,7 +9,7 @@ class TodoController {
     try {
       res.status(200).json(this.todoService.getAllTodos());
     } catch (e) {
-      res.status(404, e.message).send();
+      res.status(404).send();
     }
   }
 
@@ -17,14 +17,13 @@ class TodoController {
   getTodoById(req, res) {
     const id = parseInt(req.params.id);
     const todoRes = this.todoService.getTodoById(id);
-    if (typeof id === "number" && todoRes) {
-      try {
-        res.status(200).json(todoRes);
-      } catch (e) {
-        res.status(404, e.message).send();
-      }
-    } else {
-      res.status(400, "bad request").send();
+    if (typeof id !== "number" || todoRes === undefined) {
+      res.status(400).send();
+    }
+    try {
+      res.status(200).json(todoRes);
+    } catch (e) {
+      res.status(404).send();
     }
   }
 
@@ -32,20 +31,16 @@ class TodoController {
   addNewTodo(req, res) {
     const newTodo = req.body;
     const newTodoKeys = Object.keys(req.body);
-    if (
-      newTodoKeys.length === 2 &&
-      typeof newTodo.checked === "boolean" &&
-      newTodo.label
-    ) {
-      try {
-        res.status(201).json(this.todoService.addNewTodo(newTodo));
-      } catch (e) {
-        res.status(400, e.message).send();
-      }
-    } else {
-      res.status(400, "wrong body passed").send();
+    if (typeof newTodo.checked !== "boolean" || newTodo.label === undefined) {
+      res.status(400).send();
+    }
+    try {
+      res.status(201).json(this.todoService.addNewTodo(newTodo));
+    } catch (e) {
+      res.status(400).send();
     }
   }
+  else;
 
   // edit existant todo
   editTodo(req, res) {
@@ -53,37 +48,34 @@ class TodoController {
     const todoToEdit = req.body;
     const newTodoKeys = Object.keys(todoToEdit);
     if (
-      newTodoKeys.length == 2 &&
-      typeof todoToEdit.checked == "boolean" &&
-      todoToEdit.label &&
-      typeof id == "number" &&
-      this.todoService.getTodoById(id)
+      typeof todoToEdit.checked !== "boolean" ||
+      todoToEdit.label === undefined ||
+      typeof id !== "number" ||
+      this.todoService.getTodoById(id) === undefined
     ) {
+      res.status(400).send();
+    }
       try {
         const newTodo = this.todoService.editTodo(todoToEdit, id);
         res.status(204).send(newTodo);
       } catch (e) {
-        res.status(404, e.message).send();
+        res.status(404).send();
       }
-    } else {
-      res.status(400, "bad request").send();
-    }
-  }
-
+  } 
+  
   // delete todo
   deleteTodo(req, res) {
     const id = parseInt(req.params.id);
-    if (typeof id === "number" && this.todoService.getTodoById(id)) {
+    if (typeof id !== "number" || this.todoService.getTodoById(id) === undefined) {
+      res.status(404).send();
+    }
       try {
         this.todoService.deleteTodo(id);
         res.status(200).send();
       } catch (e) {
-        res.status(404, e.message).send();
+        res.status(404).send();
       }
-    } else {
-      res.status(404, "todo not found").send();
     }
-  }
 
   //delete all done
   deleteAllDone(req, res) {
@@ -91,7 +83,7 @@ class TodoController {
       this.todoService.deleteAllDone();
       res.status(200).send();
     } catch (e) {
-      res.status(404, e.message).send();
+      res.status(404).send();
     }
   }
 
@@ -101,7 +93,7 @@ class TodoController {
       this.todoService.toggleAllChecked();
       res.status(200).send();
     } catch (e) {
-      res.status(404, e.message).send();
+      res.status(404).send();
     }
   }
 }
