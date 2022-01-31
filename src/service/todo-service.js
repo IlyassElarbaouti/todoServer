@@ -19,8 +19,8 @@ class TodoService {
     return this.todoRepository.createTodo(newTodo);
   }
 
-  editTodo(todoToEdit, id) {
-    return this.todoRepository.editTodo(todoToEdit, id)
+  editTodo( id) {
+    return this.todoRepository.editTodo(id)
   }
 
   deleteTodo(id) {

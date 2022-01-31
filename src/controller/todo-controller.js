@@ -6,10 +6,11 @@ class TodoController {
 
   // get all todos
   getAllTodos(req, res) {
+    const allTodos = this.todoService.getAllTodos();
     try {
-      res.status(200).json(this.todoService.getAllTodos());
+      res.status(200).json(allTodos);
     } catch (e) {
-      res.status(404).send();
+      res.status(500).send();
     }
   }
 
@@ -17,13 +18,13 @@ class TodoController {
   getTodoById(req, res) {
     const id = parseInt(req.params.id);
     const todoRes = this.todoService.getTodoById(id);
-    if (typeof id !== "number" || todoRes === undefined) {
+    if (typeof id !== "number") {
       res.status(400).send();
     }
     try {
       res.status(200).json(todoRes);
     } catch (e) {
-      res.status(404).send();
+      res.status(500).send();
     }
   }
 
@@ -31,7 +32,10 @@ class TodoController {
   addNewTodo(req, res) {
     const newTodo = req.body;
     const newTodoKeys = Object.keys(req.body);
-    if (typeof newTodo.checked !== "boolean" || newTodo.label === undefined) {
+    if (
+      typeof newTodo.checked !== "boolean" ||
+      typeof newTodo.label !== "string"
+    ) {
       res.status(400).send();
     }
     try {
@@ -45,45 +49,38 @@ class TodoController {
   // edit existant todo
   editTodo(req, res) {
     const id = parseInt(req.params.id);
-    const todoToEdit = req.body;
-    const newTodoKeys = Object.keys(todoToEdit);
-    if (
-      typeof todoToEdit.checked !== "boolean" ||
-      todoToEdit.label === undefined ||
-      typeof id !== "number" ||
-      this.todoService.getTodoById(id) === undefined
-    ) {
+    if (isNaN(id)) {
       res.status(400).send();
     }
-      try {
-        const newTodo = this.todoService.editTodo(todoToEdit, id);
-        res.status(204).send(newTodo);
-      } catch (e) {
-        res.status(404).send();
-      }
-  } 
-  
+    try {
+      this.todoService.editTodo(id);
+      res.status(204).send();
+    } catch (e) {
+      res.status(404).send();
+    }
+  }
+
   // delete todo
   deleteTodo(req, res) {
     const id = parseInt(req.params.id);
-    if (typeof id !== "number" || this.todoService.getTodoById(id) === undefined) {
-      res.status(404).send();
+    if (isNaN(id)) {
+      res.status(400).send();
     }
-      try {
-        this.todoService.deleteTodo(id);
-        res.status(200).send();
-      } catch (e) {
-        res.status(404).send();
-      }
+    try {
+      this.todoService.deleteTodo(id);
+      res.status(200).send();
+    } catch{
+      res.status(500).send();
     }
+  }
 
   //delete all done
   deleteAllDone(req, res) {
     try {
       this.todoService.deleteAllDone();
       res.status(200).send();
-    } catch (e) {
-      res.status(404).send();
+    } catch{
+      res.status(500).send();
     }
   }
 
@@ -92,8 +89,8 @@ class TodoController {
     try {
       this.todoService.toggleAllChecked();
       res.status(200).send();
-    } catch (e) {
-      res.status(404).send();
+    } catch{
+      res.status(500).send();
     }
   }
 }

@@ -14,6 +14,7 @@ class TodoRepository {
         ? Math.max(...this.todos.map((todos) => todos.id)) + 1
         : 0;
   }
+
   //get all todos
   getAllTodos() {
     return this.todos;
@@ -21,12 +22,7 @@ class TodoRepository {
 
   // get todos by id
   getTodoById(id) {
-    return this.todos.find((todo) => todo.id == id);
-  }
-
-  //get todo index
-  getTodoIndex(id) {
-    return this.todos.findIndex((todo) => todo.id === id);
+    return this.todos.find((todo) => todo.id === id);
   }
 
   // add todo
@@ -37,23 +33,21 @@ class TodoRepository {
   }
 
   // edit existant todo
-  editTodo(newTodo, id) {
-    const index = this.todos.findIndex((todo) => todo.id == id);
-    if (index === -1) {
-      throw new Error("Todo is not found");
-    }
-      this.todos[index] = { ...newTodo, id };
-      return this.todos[index];
+  editTodo(id) {
+    this.todos = this.todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          checked: !todo.checked,
+        };
+      }
+      return todo;
+    });
   }
 
   // delete todo
   deleteTodo(id) {
-    const index = this.todos.findIndex((todo) => todo.id == id);
-
-    if (index === -1) {
-      throw new Error("Todo is not found");
-    }
-    this.todos.splice(index, 1);
+    this.todos = this.todos.filter((todo) => todo.id !== id);
   }
 
   // delete all done todos
