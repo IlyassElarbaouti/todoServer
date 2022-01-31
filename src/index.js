@@ -23,7 +23,7 @@ app.get("/",todoController.getAllTodos.bind(todoController));
 app.get("/:id", todoController.getTodoById.bind(todoController));
 
 // add new todo
-app.post("/", todoController.addNewTodo.bind(todoController));
+app.post("/", todoController.createTodo.bind(todoController));
 
 // edit existant todo
 app.put("/:id", todoController.editTodo.bind(todoController));

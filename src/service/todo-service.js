@@ -1,30 +1,28 @@
-const  todoRepository  = require("../repository/todo-repository.js");
+const todoRepository = require("../repository/todo-repository.js");
 
 class TodoService {
   constructor() {
     this.todoRepository = todoRepository;
-    this.getAllTodos = this.getAllTodos.bind(this);
   }
 
   getAllTodos() {
-    return this.todoRepository.getAllTodos()
-
+    return this.todoRepository.getAllTodos();
   }
 
   getTodoById(id) {
     return this.todoRepository.getTodoById(id);
   }
 
-  addNewTodo(newTodo) {
+  createTodo(newTodo) {
     return this.todoRepository.createTodo(newTodo);
   }
 
-  editTodo( id) {
-    return this.todoRepository.editTodo(id)
+  editTodo(id) {
+    return this.todoRepository.editTodo(id);
   }
 
   deleteTodo(id) {
-    return this.todoRepository.deleteTodo(id)
+    return this.todoRepository.deleteTodo(id);
   }
 
   deleteAllDone() {

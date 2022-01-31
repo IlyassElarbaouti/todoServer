@@ -6,8 +6,8 @@ class TodoController {
 
   // get all todos
   getAllTodos(req, res) {
-    const allTodos = this.todoService.getAllTodos();
     try {
+      const allTodos = this.todoService.getAllTodos();
       res.status(200).json(allTodos);
     } catch (e) {
       res.status(500).send();
@@ -17,11 +17,11 @@ class TodoController {
   // get todo by id
   getTodoById(req, res) {
     const id = parseInt(req.params.id);
-    const todoRes = this.todoService.getTodoById(id);
     if (typeof id !== "number") {
       res.status(400).send();
     }
     try {
+      const todoRes = this.todoService.getTodoById(id);
       res.status(200).json(todoRes);
     } catch (e) {
       res.status(500).send();
@@ -29,9 +29,8 @@ class TodoController {
   }
 
   // add new todo
-  addNewTodo(req, res) {
+  createTodo(req, res) {
     const newTodo = req.body;
-    const newTodoKeys = Object.keys(req.body);
     if (
       typeof newTodo.checked !== "boolean" ||
       typeof newTodo.label !== "string"
@@ -39,12 +38,12 @@ class TodoController {
       res.status(400).send();
     }
     try {
-      res.status(201).json(this.todoService.addNewTodo(newTodo));
+      this.todoService.createTodo(newTodo);
+      res.status(201).json();
     } catch (e) {
-      res.status(400).send();
+      res.status(500).send();
     }
   }
-  else;
 
   // edit existant todo
   editTodo(req, res) {
@@ -54,9 +53,9 @@ class TodoController {
     }
     try {
       this.todoService.editTodo(id);
-      res.status(204).send();
+      res.status(200).send();
     } catch (e) {
-      res.status(404).send();
+      res.status(500).send();
     }
   }
 
@@ -69,7 +68,7 @@ class TodoController {
     try {
       this.todoService.deleteTodo(id);
       res.status(200).send();
-    } catch{
+    } catch {
       res.status(500).send();
     }
   }
@@ -79,7 +78,7 @@ class TodoController {
     try {
       this.todoService.deleteAllDone();
       res.status(200).send();
-    } catch{
+    } catch {
       res.status(500).send();
     }
   }
@@ -89,7 +88,7 @@ class TodoController {
     try {
       this.todoService.toggleAllChecked();
       res.status(200).send();
-    } catch{
+    } catch {
       res.status(500).send();
     }
   }
