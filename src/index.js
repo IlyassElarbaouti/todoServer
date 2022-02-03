@@ -2,45 +2,42 @@ const cors = require("cors");
 const express = require("express");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
-const TodoController = require("./controller/todo-controller");
-const UsersController = require("./controller/users-controller");
+const usersController = require("./controllers/users-controller");
 const errorMiddleware = require("./middleware/error-middleware");
-const { body } = require('express-validator');
-const usersController = require("./controller/users-controller");
+const { body } = require("express-validator");
 require("dotenv").config();
 
 const port = 9000;
 const app = express();
 
 app.use(cors());
-
-app.use(
-  bodyParser.urlencoded({
-    extended: false,
-  })
-);
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(errorMiddleware);
 
 //register user
-app.post("/registration", body('email').isEmail(),body('password').isLength({min:5,max:32}),UsersController.registration.bind(UsersController));
+app.post(
+  "/registration",
+  body("email").isEmail(),
+  body("password").isLength({ min: 5, max: 32 }),
+  usersController.registration.bind(usersController)
+);
 
 //activate user account
-app.get("/activate/:link", UsersController.activate);
+app.get("/activate/:link", usersController.activate);
 
-//login user 
-app.post('/login', usersController.login);
+//login user
+app.post("/login", usersController.login);
 
-//logout user 
-app.post('/logout', usersController.logout)
+//logout user
+app.post("/logout", usersController.logout);
 
-//refresh token 
-app.get('/refresh', usersController.refresh);
+//refresh token
+app.get("/refresh", usersController.refresh);
 
 //get all users
-app.get('/users',usersController.getAllUsers)
-
+app.get("/users", usersController.getAllUsers);
 
 // //get all todos
 // app.get("/", TodoController.getAllTodos.bind(TodoController));

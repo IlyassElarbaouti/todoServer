@@ -1,5 +1,5 @@
-const todoService = require("../service/todo-service");
-class TodoController {
+const todoService = require("../services/todos-service");
+class TodosController {
   constructor() {
     this.todoService = todoService;
   }
@@ -93,4 +93,4 @@ class TodoController {
     }
   }
 }
-module.exports = new TodoController();
+module.exports = new TodosController();

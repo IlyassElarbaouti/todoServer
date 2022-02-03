@@ -1,8 +1,8 @@
-const usersRepository = require("../repository/users-repository");
+const usersRepository = require("../repositories/users-repository");
 const uuid = require("uuid");
 const bcrypt = require("bcrypt");
 const mailService = require("./mail-service");
-const tokenService = require("./token-service");
+const tokenService = require("./tokens-service");
 const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 
@@ -16,7 +16,7 @@ class UserService {
         `user already registred with this email:${email}`
       );
     }
-    let hashPassword = this.getHashPassword(password);
+    let hashPassword = bcrypt.hash(password, 3);
     const activationLink = uuid.v4();
     const user = usersRepository.createUser(
       email,

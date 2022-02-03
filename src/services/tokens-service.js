@@ -1,9 +1,9 @@
-const tokenRepository = require("../repository/token-repository.js");
+const tokensRepository = require("../repositories/tokens-repository.js");
 const jwt = require("jsonwebtoken");
 
-class TokenService {
+class TokensService {
   constructor() {
-    this.tokenRepository = tokenRepository;
+    this.tokensRepository = tokensRepository;
   }
 
   validateAccessToken(token) {
@@ -38,14 +38,14 @@ class TokenService {
   }
 
   saveToken(userId, refreshToken) {
-    const tokenData = this.tokenRepository.tokens.find(
+    const tokenData = this.tokensRepository.tokens.find(
       (token) => token.user === userId
     );
     if (tokenData) {
       tokenData.refreshToken = refreshToken;
       return tokenData;
     }
-    const token = this.tokenRepository.tokens.push({
+    const token = this.tokensRepository.tokens.push({
       user: userId,
       refreshToken,
     });
@@ -53,17 +53,17 @@ class TokenService {
   }
 
   removeToken(refreshToken) {
-    tokenRepository.tokens = tokenRepository.tokens.filter(
+    tokensRepository.tokens = tokensRepository.tokens.filter(
       (token) => token.refreshToken === refreshToken
     );
-    return tokenRepository.tokens;
+    return tokensRepository.tokens;
   }
 
   findToken(refreshToken) {
-    const tokenData = tokenRepository.tokens.find(
+    const tokenData = tokensRepository.tokens.find(
       (token) => token.refreshToken === refreshToken
     );
     return tokenData;
   }
 }
-module.exports = new TokenService();
+module.exports = new TokensService();

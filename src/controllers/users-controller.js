@@ -1,16 +1,14 @@
-const usersService = require("../service/users-service");
-const usersRepository = require("../repository/users-repository");
+const usersService = require("../services/users-service");
+const usersRepository = require("../repositories/users-repository");
 const { validationResult } = require("express-validator");
 const ApiError = require("../exceptions/api-error");
 
-class UserController {
+class UsersController {
   registration(req, res, next) {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        return next(
-          ApiError.badRequest("error while validation", errors.array())
-        );
+        throw  ApiError.badRequest("error while validation", errors.array())
       }
       const { email, password } = req.body;
       const userData = usersService.registration(email, password);
@@ -20,7 +18,11 @@ class UserController {
       });
       return res.json(userData);
     } catch (e) {
-      next(e);
+      if (e.status === 400) {
+        next(e);
+        return 
+      }
+      next(500)
     }
   }
 
@@ -82,4 +84,4 @@ class UserController {
     }
   }
 }
-module.exports = new UserController();
+module.exports = new UsersController();

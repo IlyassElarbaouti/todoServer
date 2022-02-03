@@ -1,4 +1,4 @@
-class TodoRepository {
+class TodosRepository {
   constructor() {
     this.todos = [
       { label: "test0", id: 0, checked: true },
@@ -63,5 +63,5 @@ class TodoRepository {
     });
   }
 }
-const todoRepository = new TodoRepository();
-module.exports = todoRepository;
+const todosRepository = new TodosRepository();
+module.exports = todosRepository;
