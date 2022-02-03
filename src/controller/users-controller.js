@@ -52,11 +52,33 @@ class UserController {
     try {
       const { refreshToken } = req.body;
       const token = usersService.logout(refreshToken);
-      res.clearCookie('refreshToken')
-      return res.status(200).json(token)
+      res.clearCookie("refreshToken");
+      return res.status(200).json(token);
+    } catch (e) {
+      next(e);
     }
-    catch (e) {
-      next(e)
+  }
+
+  getAllUsers(req, res, next) {
+    try {
+      const users = usersService.getAllUsers()
+      return res.json(users);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  refresh(req, res, next) {
+    try {
+      const { refreshToken } = req.cookies;
+      const userData = usersService.refresh(refreshToken);
+      res.cookie("refreshToken", userData.refreshToken, {
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
+      });
+      return res.json(userData);
+    } catch (e) {
+      next(e);
     }
   }
 }

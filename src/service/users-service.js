@@ -16,7 +16,7 @@ class UserService {
         `user already registred with this email:${email}`
       );
     }
-    const hashPassword = bcrypt.hash(password, 3);
+    let hashPassword = this.getHashPassword(password);
     const activationLink = uuid.v4();
     const user = usersRepository.createUser(
       email,
@@ -37,6 +37,10 @@ class UserService {
     return { ...tokens, user: userDto };
   }
 
+  async getHashPassword(password) {
+    await bcrypt.hash(password, 3).then((hashPass) => hashPass);
+  }
+
   activate(activationLink) {
     const user = usersRepository.users.find(
       (user) => user.activationLink === activationLink
@@ -54,7 +58,10 @@ class UserService {
     if (!user) {
       throw ApiError.badRequest("no user found");
     }
-    const isPassEquals = bcrypt.compare(String(password), String(user.password));
+    const isPassEquals = bcrypt.compare(
+      String(password),
+      String(user.password)
+    );
     if (!isPassEquals) {
       throw ApiError.badRequest("incorrect password");
     }
@@ -66,7 +73,28 @@ class UserService {
 
   logout(refreshToken) {
     const token = tokenService.removeToken(refreshToken);
-    return token
+    return token;
+  }
+
+  getAllUsers() {
+    const users = usersRepository.users;
+    return users;
+  }
+
+  refresh(refreshToken) {
+    if (!refreshToken) {
+      throw ApiError.UnauthorizedError();
+    }
+    const userData = tokenService.validateRefreshToken(refreshToken);
+    const tokenFromRepo = tokenService.findToken(refreshToken);
+    if (!userData || tokenFromRepo) {
+      throw ApiError.UnauthorizedError();
+    }
+    const user = usersRepository.find((user) => user.id === userData.id);
+    const userDto = new UserDto(user);
+    const tokens = tokenService.generateTokens({ ...userDto });
+    tokenService.saveToken(userDto.id, tokens.refreshToken);
+    return { ...tokens, user: userDto };
   }
 }
 module.exports = new UserService();

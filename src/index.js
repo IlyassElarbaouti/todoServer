@@ -30,7 +30,16 @@ app.post("/registration", body('email').isEmail(),body('password').isLength({min
 app.get("/activate/:link", UsersController.activate);
 
 //login user 
-app.post('/login', usersController.login)
+app.post('/login', usersController.login);
+
+//logout user 
+app.post('/logout', usersController.logout)
+
+//refresh token 
+app.get('/refresh', usersController.refresh);
+
+//get all users
+app.get('/users',usersController.getAllUsers)
 
 
 // //get all todos

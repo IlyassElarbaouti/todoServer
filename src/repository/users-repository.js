@@ -15,11 +15,11 @@ class UsersRepository {
       password,
       isActivated: false,
       activationLink,
-      id:this.nextId
+      id: this.nextId,
     };
     this.users.push(newUser);
     this.nextId++;
     return newUser;
   }
 }
-module.exports=  new UsersRepository();
+module.exports = new UsersRepository();
