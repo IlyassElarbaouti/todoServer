@@ -7,6 +7,7 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 
 class UserService {
+  
   registration(email, password) {
     const candidate = usersRepository.users.find(
       (user) => user.email === email
@@ -45,8 +46,6 @@ class UserService {
     const user = usersRepository.users.find(
       (user) => user.activationLink === activationLink
     );
-    console.log(activationLink);
-    console.log(usersRepository.users);
     if (!user) {
       throw ApiError.badRequest("no activation link found");
     }
