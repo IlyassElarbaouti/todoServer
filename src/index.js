@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const usersController = require("./controllers/users-controller");
 const errorMiddleware = require("./middleware/error-middleware");
 const { body } = require("express-validator");
+const authMiddleware = require("./middleware/auth-middleware");
 require("dotenv").config();
 
 const port = 9000;
@@ -37,28 +38,56 @@ app.post("/logout", usersController.logout);
 app.get("/refresh", usersController.refresh);
 
 //get all users
-app.get("/users", usersController.getAllUsers);
+app.get("/users",authMiddleware, usersController.getAllUsers);
 
-// //get all todos
-// app.get("/", TodoController.getAllTodos.bind(TodoController));
+//get all todos
+app.get(
+  "/todos/",
+  authMiddleware,
+  TodoController.getAllTodos.bind(TodoController)
+);
 
-// //get todo by index
-// app.get("/:id", TodoController.getTodoById.bind(TodoController));
+//get todo by index
+app.get(
+  "/todos/:id",
+  authMiddleware,
+  TodoController.getTodoById.bind(TodoController)
+);
 
-// // add new todo
-// app.post("/", TodoController.createTodo.bind(TodoController));
+// add new todo
+app.post(
+  "/todos/",
+  authMiddleware,
+  TodoController.createTodo.bind(TodoController)
+);
 
-// // edit existant todo
-// app.put("/:id", TodoController.editTodo.bind(TodoController));
+// edit existant todo
+app.put(
+  "/todos/:id",
+  authMiddleware,
+  TodoController.editTodo.bind(TodoController)
+);
 
-// //delete todo
-// app.delete("/:id", TodoController.deleteTodo.bind(TodoController));
+//delete todo
+app.delete(
+  "/todos/:id",
+  authMiddleware,
+  TodoController.deleteTodo.bind(TodoController)
+);
 
-// //delete all done
-// app.delete("/", TodoController.deleteAllDone.bind(TodoController));
+//delete all done
+app.delete(
+  "/todos/",
+  authMiddleware,
+  TodoController.deleteAllDone.bind(TodoController)
+);
 
-// //toggle all checked
-// app.put("/", TodoController.toggleAllChecked.bind(TodoController));
+//toggle all checked
+app.put(
+  "/todos/",
+  authMiddleware,
+  TodoController.toggleAllChecked.bind(TodoController)
+);
 
 app.listen(port);
 

@@ -8,7 +8,7 @@ class TokensService {
 
   validateAccessToken(token) {
     try {
-      const userData = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
+      const userData = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
       return userData;
     } catch (e) {
       return null;
@@ -17,7 +17,7 @@ class TokensService {
 
   validateRefreshToken(token) {
     try {
-      const userData = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+      const userData = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
       return userData;
     } catch (e) {
       return null;
@@ -49,6 +49,7 @@ class TokensService {
       user: userId,
       refreshToken,
     });
+    console.log("_____", this.tokensRepository.tokens);
     return token;
   }
 

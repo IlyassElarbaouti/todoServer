@@ -66,6 +66,7 @@ class UserService {
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
+    console.log(tokens)
     tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
   }
@@ -84,12 +85,15 @@ class UserService {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
     }
+    // userdata is object with 
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromRepo = tokenService.findToken(refreshToken);
-    if (!userData || tokenFromRepo) {
+    console.log('--------' ,userData);
+    console.log('===========', tokenFromRepo);
+    if (!userData || !tokenFromRepo) {
       throw ApiError.UnauthorizedError();
     }
-    const user = usersRepository.find((user) => user.id === userData.id);
+    const user = usersRepository.users.find((user) => user.id === userData.id);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     tokenService.saveToken(userDto.id, tokens.refreshToken);
