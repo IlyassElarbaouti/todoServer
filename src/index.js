@@ -7,7 +7,7 @@ const errorMiddleware = require("./middleware/error-middleware");
 const { body } = require("express-validator");
 const authMiddleware = require("./middleware/auth-middleware");
 require("dotenv").config();
-
+const todosController = require('./controllers/todos-controller')
 const port = 9000;
 const app = express();
 
@@ -44,49 +44,49 @@ app.get("/users",authMiddleware, usersController.getAllUsers);
 app.get(
   "/todos/",
   authMiddleware,
-  TodoController.getAllTodos.bind(TodoController)
+  todosController.getAllTodos.bind(todosController)
 );
 
 //get todo by index
 app.get(
   "/todos/:id",
   authMiddleware,
-  TodoController.getTodoById.bind(TodoController)
+  todosController.getTodoById.bind(todosController)
 );
 
 // add new todo
 app.post(
   "/todos/",
   authMiddleware,
-  TodoController.createTodo.bind(TodoController)
+  todosController.createTodo.bind(todosController)
 );
 
 // edit existant todo
 app.put(
   "/todos/:id",
   authMiddleware,
-  TodoController.editTodo.bind(TodoController)
+  todosController.editTodo.bind(todosController)
 );
 
 //delete todo
 app.delete(
   "/todos/:id",
   authMiddleware,
-  TodoController.deleteTodo.bind(TodoController)
+  todosController.deleteTodo.bind(todosController)
 );
 
 //delete all done
 app.delete(
   "/todos/",
   authMiddleware,
-  TodoController.deleteAllDone.bind(TodoController)
+  todosController.deleteAllDone.bind(todosController)
 );
 
 //toggle all checked
 app.put(
   "/todos/",
   authMiddleware,
-  TodoController.toggleAllChecked.bind(TodoController)
+  todosController.toggleAllChecked.bind(todosController)
 );
 
 app.listen(port);
