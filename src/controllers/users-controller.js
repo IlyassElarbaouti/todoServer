@@ -10,12 +10,14 @@ class UsersController {
       if (!errors.isEmpty()) {
         throw ApiError.badRequest("error while validation", errors.array());
       }
+
       const { email, password } = req.body;
       const userData = usersService.registration(email, password);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
+
       return res.json(userData);
     } catch (e) {
       next(e);
@@ -36,10 +38,12 @@ class UsersController {
     try {
       const { email, password } = req.body;
       const userData = usersService.login(email, password);
+
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
+
       return res.json(userData);
     } catch (e) {
       next(e);
