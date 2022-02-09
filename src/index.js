@@ -7,7 +7,7 @@ const errorMiddleware = require("./middleware/error-middleware");
 const { body } = require("express-validator");
 const authMiddleware = require("./middleware/auth-middleware");
 require("dotenv").config();
-const todosController = require('./controllers/todos-controller')
+const todosController = require("./controllers/todos-controller");
 const port = 9000;
 const app = express();
 
@@ -17,7 +17,6 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(errorMiddleware);
 
-//register user
 app.post(
   "/registration",
   body("email").isEmail(),
@@ -25,69 +24,19 @@ app.post(
   usersController.registration.bind(usersController)
 );
 
-//activate user account
 app.get("/activate/:link", usersController.activate);
-
-//login user
-app.post("/login", usersController.login);
-
-//logout user
-app.post("/logout", usersController.logout);
-
-//refresh token
 app.get("/refresh", usersController.refresh);
+app.post("/login", usersController.login);
+app.post("/logout", usersController.logout);
+app.get("/users", authMiddleware, usersController.getAllUsers);
 
-//get all users
-app.get("/users",authMiddleware, usersController.getAllUsers);
-
-//get all todos
-app.get(
-  "/todos/",
-  authMiddleware,
-  todosController.getAllTodos.bind(todosController)
-);
-
-//get todo by index
-app.get(
-  "/todos/:id",
-  authMiddleware,
-  todosController.getTodoById.bind(todosController)
-);
-
-// add new todo
-app.post(
-  "/todos/",
-  authMiddleware,
-  todosController.createTodo.bind(todosController)
-);
-
-// edit existant todo
-app.put(
-  "/todos/:id",
-  authMiddleware,
-  todosController.editTodo.bind(todosController)
-);
-
-//delete todo
-app.delete(
-  "/todos/:id",
-  authMiddleware,
-  todosController.deleteTodo.bind(todosController)
-);
-
-//delete all done
-app.delete(
-  "/todos/",
-  authMiddleware,
-  todosController.deleteAllDone.bind(todosController)
-);
-
-//toggle all checked
-app.put(
-  "/todos/",
-  authMiddleware,
-  todosController.toggleAllChecked.bind(todosController)
-);
+app.get("/todos/", authMiddleware, todosController.getAllTodos);
+app.get("/todos/:id", authMiddleware, todosController.getTodoById);
+app.post("/todos/", authMiddleware, todosController.createTodo);
+app.put("/todos/:id", authMiddleware, todosController.editTodo);
+app.delete("/todos/:id", authMiddleware, todosController.deleteTodo);
+app.delete("/todos/", authMiddleware, todosController.deleteAllDone);
+app.put("/todos/", authMiddleware, todosController.toggleAllChecked);
 
 app.listen(port);
 

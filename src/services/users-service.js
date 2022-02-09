@@ -7,24 +7,23 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 
 class UserService {
-  
   registration(email, password) {
-    const candidate = usersRepository.users.find(
-      (user) => user.email === email
-    );
-    if (candidate) {
-      throw ApiError.badRequest(
-        `user already registred with this email:${email}`
-      );
-    }
-    let hashPassword = bcrypt.hash(password, 3);
-    const activationLink = uuid.v4();
-    const user = usersRepository.createUser(
-      email,
-      hashPassword,
-      activationLink
-    );
     try {
+      const candidate = usersRepository.users.find(
+        (user) => user.email === email
+      );
+      if (candidate) {
+        throw ApiError.badRequest(
+          `user already registred with this email:${email}`
+        );
+      }
+      let hashPassword = bcrypt.hash(password, 3);
+      const activationLink = uuid.v4();
+      const user = usersRepository.createUser(
+        email,
+        hashPassword,
+        activationLink
+      );
       mailService.sendActivationMail(
         email,
         `${process.env.API_URL}/activate/${activationLink}`
@@ -66,7 +65,6 @@ class UserService {
     }
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
-    console.log(tokens)
     tokenService.saveToken(userDto.id, tokens.refreshToken);
     return { ...tokens, user: userDto };
   }
@@ -85,11 +83,9 @@ class UserService {
     if (!refreshToken) {
       throw ApiError.UnauthorizedError();
     }
-    // userdata is object with 
+    // userdata is object with
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromRepo = tokenService.findToken(refreshToken);
-    console.log('--------' ,userData);
-    console.log('===========', tokenFromRepo);
     if (!userData || !tokenFromRepo) {
       throw ApiError.UnauthorizedError();
     }

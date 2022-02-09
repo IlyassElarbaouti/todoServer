@@ -8,7 +8,7 @@ class UsersController {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
-        throw  ApiError.badRequest("error while validation", errors.array())
+        throw ApiError.badRequest("error while validation", errors.array());
       }
       const { email, password } = req.body;
       const userData = usersService.registration(email, password);
@@ -18,11 +18,7 @@ class UsersController {
       });
       return res.json(userData);
     } catch (e) {
-      if (e.status === 400) {
-        next(e);
-        return 
-      }
-      next(500)
+      next(e);
     }
   }
 
@@ -63,10 +59,10 @@ class UsersController {
 
   getAllUsers(req, res, next) {
     try {
-      const users = usersService.getAllUsers()
-      return res.json(users);
+      const users = usersService.getAllUsers();
+      return res.status(200).json(users);
     } catch (e) {
-      console.log(e);
+      next(e);
     }
   }
 

@@ -15,47 +15,39 @@ class TodosRepository {
         : 0;
   }
 
-  //get all todos
   getAllTodos() {
     return this.todos;
   }
 
-  // get todos by id
   getTodoById(id) {
     return this.todos.find((todo) => todo.id === id);
   }
 
-  // add todo
   createTodo(todo) {
     const newTodo = { ...todo, id: this.nextId++ };
     this.todos.push(newTodo);
     return newTodo;
   }
 
-  // edit existant todo
   editTodo(id) {
     this.todos = this.todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          checked: !todo.checked,
-        };
-      }
-      return todo;
+      todo.id === id
+        ? {
+            ...todo,
+            checked: !todo.checked,
+          }
+        : todo;
     });
   }
 
-  // delete todo
   deleteTodo(id) {
     this.todos = this.todos.filter((todo) => todo.id !== id);
   }
 
-  // delete all done todos
   deleteAllDone() {
     this.todos = this.todos.filter((todo) => !todo.checked);
   }
 
-  //toggle all checked
   toggleAllChecked() {
     const isAllChecked = this.todos.every((todo) => todo.checked);
     this.todos.forEach((todo) => {

@@ -2,94 +2,94 @@ const todoService = require("../services/todos-service");
 class TodosController {
   constructor() {
     this.todoService = todoService;
+    this.getAllTodos = this.getAllTodos.bind(this);
+    this.getTodoById = this.getTodoById.bind(this);
+    this.createTodo = this.createTodo.bind(this);
+    this.editTodo = this.editTodo.bind(this);
+    this.deleteTodo = this.deleteTodo.bind(this);
+    this.deleteAllDone = this.deleteAllDone.bind(this);
+    this.toggleAllChecked = this.toggleAllChecked.bind(this);
   }
 
-  // get all todos
-  getAllTodos(req, res) {
+  getAllTodos(req, res, next) {
     try {
       const allTodos = this.todoService.getAllTodos();
       res.status(200).json(allTodos);
     } catch (e) {
-      res.status(500).send();
+      next(500);
     }
   }
 
-  // get todo by id
-  getTodoById(req, res) {
-    const id = parseInt(req.params.id);
-    if (typeof id !== "number") {
-      res.status(400).send();
-    }
+  getTodoById(req, res, next) {
     try {
+      const id = parseInt(req.params.id);
+      if (typeof id !== "number") {
+        throw ApiError.badRequest("id should be a number", errors.array());
+      }
       const todoRes = this.todoService.getTodoById(id);
       res.status(200).json(todoRes);
     } catch (e) {
-      res.status(500).send();
+      next(500);
     }
   }
 
-  // add new todo
-  createTodo(req, res) {
-    const newTodo = req.body;
-    if (
-      typeof newTodo.checked !== "boolean" ||
-      typeof newTodo.label !== "string"
-    ) {
-      res.status(400).send();
-    }
+  createTodo(req, res, next) {
     try {
+      const newTodo = req.body;
+      if (
+        typeof newTodo.checked !== "boolean" ||
+        typeof newTodo.label !== "string"
+      ) {
+        throw ApiError.badRequest("check data types", errors.array());
+      }
       this.todoService.createTodo(newTodo);
       res.status(201).json();
-    } catch (e) {
-      res.status(500).send();
+    } catch {
+      next(500);
     }
   }
 
-  // edit existant todo
-  editTodo(req, res) {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      res.status(400).send();
-    }
+  editTodo(req, res, next) {
     try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        throw ApiError.badRequest("id should be a number", errors.array());
+      }
       this.todoService.editTodo(id);
       res.status(200).send();
-    } catch (e) {
-      res.status(500).send();
+    } catch {
+      next(500);
     }
   }
 
-  // delete todo
-  deleteTodo(req, res) {
-    const id = parseInt(req.params.id);
-    if (isNaN(id)) {
-      res.status(400).send();
-    }
+  deleteTodo(req, res, next) {
     try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        throw ApiError.badRequest("id should be a number", errors.array());
+      }
       this.todoService.deleteTodo(id);
       res.status(200).send();
     } catch {
-      res.status(500).send();
+      next(500);
     }
   }
 
-  //delete all done
-  deleteAllDone(req, res) {
+  deleteAllDone(req, res, next) {
     try {
       this.todoService.deleteAllDone();
       res.status(200).send();
     } catch {
-      res.status(500).send();
+      next(500);
     }
   }
 
-  //toggle all checked
-  toggleAllChecked(req, res) {
+  toggleAllChecked(req, res, next) {
     try {
       this.todoService.toggleAllChecked();
       res.status(200).send();
     } catch {
-      res.status(500).send();
+      next(500);
     }
   }
 }

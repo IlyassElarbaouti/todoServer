@@ -49,7 +49,6 @@ class TokensService {
       user: userId,
       refreshToken,
     });
-    console.log("_____", this.tokensRepository.tokens);
     return token;
   }
 

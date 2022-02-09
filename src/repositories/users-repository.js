@@ -12,13 +12,14 @@ class UsersRepository {
   createUser(email, password, activationLink) {
     const newUser = {
       email,
-      password:'',
+      password: "",
       isActivated: false,
       activationLink,
       id: this.nextId,
     };
-    password.then(data=>newUser.password=data),
-    this.users.push(newUser);
+
+    password.then((data) => (newUser.password = data)),
+      this.users.push(newUser);
     this.nextId++;
     return newUser;
   }
