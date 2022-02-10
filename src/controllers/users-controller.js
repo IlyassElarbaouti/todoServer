@@ -1,5 +1,4 @@
 const usersService = require("../services/users-service");
-const usersRepository = require("../repositories/users-repository");
 const { validationResult } = require("express-validator");
 const ApiError = require("../exceptions/api-error");
 
@@ -7,6 +6,7 @@ class UsersController {
   async registration(req, res, next) {
     try {
       const errors = validationResult(req);
+
       if (!errors.isEmpty()) {
         throw ApiError.badRequest("error while validation", errors.array());
       }

@@ -1,5 +1,4 @@
 const nodemailer = require("nodemailer");
-const { nextId } = require("../repositories/users-repository");
 class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({

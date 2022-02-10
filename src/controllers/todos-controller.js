@@ -38,12 +38,14 @@ class TodosController {
   createTodo(req, res, next) {
     try {
       const newTodo = req.body;
+
       if (
         typeof newTodo.checked !== "boolean" ||
         typeof newTodo.label !== "string"
       ) {
         throw ApiError.badRequest("check data types", errors.array());
       }
+
       this.todoService.createTodo(newTodo);
       res.status(201).json();
     } catch {
@@ -55,9 +57,11 @@ class TodosController {
     try {
       const label = req.body.label;
       const id = parseInt(req.params.id);
+
       if (typeof label !== "string" || isNaN(id)) {
         throw ApiError.badRequest("check data types");
       }
+
       this.todoService.editLabel(id, label);
       res.status(201).send();
     } catch (e) {
@@ -68,9 +72,11 @@ class TodosController {
   toggleTodo(req, res, next) {
     try {
       const id = parseInt(req.params.id);
+
       if (isNaN(id)) {
         throw ApiError.badRequest("id should be a number", errors.array());
       }
+
       this.todoService.toggleTodo(id);
       res.status(200).send();
     } catch {
@@ -81,9 +87,11 @@ class TodosController {
   deleteTodo(req, res, next) {
     try {
       const id = parseInt(req.params.id);
+
       if (isNaN(id)) {
         throw ApiError.badRequest("id should be a number", errors.array());
       }
+      
       this.todoService.deleteTodo(id);
       res.status(200).send();
     } catch {
