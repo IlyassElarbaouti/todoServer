@@ -8,6 +8,7 @@ const { body } = require("express-validator");
 const authMiddleware = require("./middleware/auth-middleware");
 require("dotenv").config();
 const todosController = require("./controllers/todos-controller");
+const todosService = require("./services/todos-service");
 const port = 9000;
 const app = express();
 
@@ -33,10 +34,11 @@ app.get("/users", authMiddleware, usersController.getAllUsers);
 app.get("/todos/", authMiddleware, todosController.getAllTodos);
 app.get("/todos/:id", authMiddleware, todosController.getTodoById);
 app.post("/todos/", authMiddleware, todosController.createTodo);
-app.put("/todos/toggle/:id", authMiddleware, todosController.editTodo);
+app.put("/todos/toggle/:id", authMiddleware, todosController.toggleTodo);
 app.delete("/todos/:id", authMiddleware, todosController.deleteTodo);
 app.delete("/todos/", authMiddleware, todosController.deleteAllDone);
 app.put("/todos/", authMiddleware, todosController.toggleAllChecked);
+app.put("/todos/label/:id", authMiddleware, todosController.editLabel);
 
 app.listen(port);
 

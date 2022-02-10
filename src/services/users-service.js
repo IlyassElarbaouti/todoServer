@@ -7,22 +7,26 @@ const UserDto = require("../dtos/user-dto");
 const ApiError = require("../exceptions/api-error");
 
 class UserService {
-  registration(email, password) {
+  async registration(email, password) {
     const candidate = usersRepository.users.find(
       (user) => user.email === email
     );
+
     if (candidate) {
       throw ApiError.badRequest(
         `user already registred with this email:${email}`
       );
     }
-    let hashPassword = bcrypt.hash(password, 3);
+
+    let hashPassword = await bcrypt.hash(password, 3);
     const activationLink = uuid.v4();
+
     const user = usersRepository.createUser(
       email,
       hashPassword,
       activationLink
     );
+
     try {
       mailService.sendActivationMail(
         email,
@@ -34,6 +38,7 @@ class UserService {
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     tokenService.saveToken(userDto.id, tokens.refreshToken);
+
     return { ...tokens, user: userDto };
   }
 

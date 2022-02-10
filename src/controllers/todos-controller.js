@@ -1,14 +1,16 @@
 const todoService = require("../services/todos-service");
+const ApiError = require("../exceptions/api-error");
 class TodosController {
   constructor() {
     this.todoService = todoService;
     this.getAllTodos = this.getAllTodos.bind(this);
     this.getTodoById = this.getTodoById.bind(this);
     this.createTodo = this.createTodo.bind(this);
-    this.editTodo = this.editTodo.bind(this);
+    this.toggleTodo = this.toggleTodo.bind(this);
     this.deleteTodo = this.deleteTodo.bind(this);
     this.deleteAllDone = this.deleteAllDone.bind(this);
     this.toggleAllChecked = this.toggleAllChecked.bind(this);
+    this.editLabel = this.editLabel.bind(this);
   }
 
   getAllTodos(req, res, next) {
@@ -24,7 +26,7 @@ class TodosController {
     try {
       const id = parseInt(req.params.id);
       if (typeof id !== "number") {
-        throw ApiError.badRequest("id should be a number", errors.array());
+        throw ApiError.badRequest("id should be a number");
       }
       const todoRes = this.todoService.getTodoById(id);
       res.status(200).json(todoRes);
@@ -49,13 +51,27 @@ class TodosController {
     }
   }
 
-  editTodo(req, res, next) {
+  editLabel(req, res, next) {
+    try {
+      const label = req.body.label;
+      const id = parseInt(req.params.id);
+      if (typeof label !== "string" || isNaN(id)) {
+        throw ApiError.badRequest("check data types");
+      }
+      this.todoService.editLabel(id, label);
+      res.status(201).send();
+    } catch (e) {
+      next(e);
+    }
+  }
+
+  toggleTodo(req, res, next) {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
         throw ApiError.badRequest("id should be a number", errors.array());
       }
-      this.todoService.editTodo(id);
+      this.todoService.toggleTodo(id);
       res.status(200).send();
     } catch {
       next(500);

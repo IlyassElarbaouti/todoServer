@@ -29,14 +29,29 @@ class TodosRepository {
     return newTodo;
   }
 
-  editTodo(id) {
+  editLabel(id, label) {
     this.todos = this.todos.map((todo) => {
-      todo.id === id
-        ? {
-            ...todo,
-            checked: !todo.checked,
-          }
-        : todo;
+      if (todo.id === id) {
+        return {
+          ...todo,
+          label,
+        };
+      } else {
+        return todo;
+      }
+    });
+  }
+
+  toggleTodo(id) {
+    this.todos = this.todos.map((todo) => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          checked: !todo.checked,
+        };
+      } else {
+        return todo;
+      }
     });
   }
 
