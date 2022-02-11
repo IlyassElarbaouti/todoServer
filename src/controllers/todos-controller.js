@@ -1,5 +1,6 @@
 const todoService = require("../services/todos-service");
 const ApiError = require("../exceptions/api-error");
+
 class TodosController {
   constructor() {
     this.todoService = todoService;
@@ -18,7 +19,7 @@ class TodosController {
       const allTodos = this.todoService.getAllTodos();
       res.status(200).json(allTodos);
     } catch (e) {
-      next(500);
+      next(e);
     }
   }
 
@@ -31,7 +32,7 @@ class TodosController {
       const todoRes = this.todoService.getTodoById(id);
       res.status(200).json(todoRes);
     } catch (e) {
-      next(500);
+      next(e);
     }
   }
 
@@ -48,8 +49,8 @@ class TodosController {
 
       this.todoService.createTodo(newTodo);
       res.status(201).json();
-    } catch {
-      next(500);
+    } catch(e) {
+      next(e);
     }
   }
 
@@ -79,8 +80,8 @@ class TodosController {
 
       this.todoService.toggleTodo(id);
       res.status(200).send();
-    } catch {
-      next(500);
+    } catch(e) {
+      next(e);
     }
   }
 
@@ -91,11 +92,11 @@ class TodosController {
       if (isNaN(id)) {
         throw ApiError.badRequest("id should be a number", errors.array());
       }
-      
+
       this.todoService.deleteTodo(id);
       res.status(200).send();
-    } catch {
-      next(500);
+    } catch(e) {
+      next(e);
     }
   }
 
@@ -103,8 +104,8 @@ class TodosController {
     try {
       this.todoService.deleteAllDone();
       res.status(200).send();
-    } catch {
-      next(500);
+    } catch(e) {
+      next(e);
     }
   }
 
@@ -112,8 +113,8 @@ class TodosController {
     try {
       this.todoService.toggleAllChecked();
       res.status(200).send();
-    } catch {
-      next(500);
+    } catch(e) {
+      next(e);
     }
   }
 }

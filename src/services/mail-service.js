@@ -1,5 +1,6 @@
 const nodemailer = require("nodemailer");
 const ApiError = require("../exceptions/api-error");
+
 class MailService {
   constructor() {
     this.transporter = nodemailer.createTransport({
