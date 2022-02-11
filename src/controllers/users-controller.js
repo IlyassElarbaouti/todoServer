@@ -8,7 +8,7 @@ class UsersController {
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
-        throw ApiError.badRequest("error while validation", errors.array());
+        throw ApiError.badRequest("error while validation");
       }
 
       const { email, password } = req.body;
@@ -27,6 +27,9 @@ class UsersController {
   activate(req, res, next) {
     try {
       const activationLink = req.params.link;
+      if (!activationLink) {
+        throw ApiError.badRequest("activation link not found");
+      }
       usersService.activate(activationLink);
       return res.redirect(process.env.CLIENT_URL);
     } catch (e) {
@@ -38,7 +41,9 @@ class UsersController {
     try {
       const { email, password } = req.body;
       const userData = usersService.login(email, password);
-
+      if (!email || !password) {
+        throw ApiError.badRequest("email and password are required");
+      }
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
@@ -55,7 +60,6 @@ class UsersController {
       const { refreshToken } = req.body;
       const token = usersService.logout(refreshToken);
       res.clearCookie("refreshToken");
-
       return res.status(200).json(token);
     } catch (e) {
       next(e);
@@ -75,7 +79,6 @@ class UsersController {
     try {
       const { refreshToken } = req.cookies;
       const userData = usersService.refresh(refreshToken);
-
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,

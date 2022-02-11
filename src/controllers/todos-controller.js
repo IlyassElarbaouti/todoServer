@@ -17,6 +17,9 @@ class TodosController {
   getAllTodos(req, res, next) {
     try {
       const allTodos = this.todoService.getAllTodos();
+      if (!allTodos) {
+        throw ApiError.dataNotFound("todos not found");
+      }
       res.status(200).json(allTodos);
     } catch (e) {
       next(e);
@@ -30,6 +33,9 @@ class TodosController {
         throw ApiError.badRequest("id should be a number");
       }
       const todoRes = this.todoService.getTodoById(id);
+      if (!todoRes) {
+        throw ApiError.dataNotFound("todo not found");
+      }
       res.status(200).json(todoRes);
     } catch (e) {
       next(e);
@@ -44,12 +50,12 @@ class TodosController {
         typeof newTodo.checked !== "boolean" ||
         typeof newTodo.label !== "string"
       ) {
-        throw ApiError.badRequest("check data types", errors.array());
+        throw ApiError.badRequest("check data types");
       }
 
       this.todoService.createTodo(newTodo);
       res.status(201).json();
-    } catch(e) {
+    } catch (e) {
       next(e);
     }
   }
@@ -64,6 +70,7 @@ class TodosController {
       }
 
       this.todoService.editLabel(id, label);
+      
       res.status(201).send();
     } catch (e) {
       next(e);
@@ -75,12 +82,13 @@ class TodosController {
       const id = parseInt(req.params.id);
 
       if (isNaN(id)) {
-        throw ApiError.badRequest("id should be a number", errors.array());
+        throw ApiError.badRequest("id should be a number");
       }
 
       this.todoService.toggleTodo(id);
-      res.status(200).send();
-    } catch(e) {
+       const allTodos = this.todoService.getAllTodos();
+      res.status(200).send(allTodos);
+    } catch (e) {
       next(e);
     }
   }
@@ -90,12 +98,13 @@ class TodosController {
       const id = parseInt(req.params.id);
 
       if (isNaN(id)) {
-        throw ApiError.badRequest("id should be a number", errors.array());
+        throw ApiError.badRequest("id should be a number");
       }
 
+      const allTodos = this.todoService.getAllTodos();
       this.todoService.deleteTodo(id);
-      res.status(200).send();
-    } catch(e) {
+      res.status(200).send(allTodos);
+    } catch (e) {
       next(e);
     }
   }
@@ -103,8 +112,9 @@ class TodosController {
   deleteAllDone(req, res, next) {
     try {
       this.todoService.deleteAllDone();
-      res.status(200).send();
-    } catch(e) {
+      const allTodos = this.todoService.getAllTodos();
+      res.status(200).send(allTodos);
+    } catch (e) {
       next(e);
     }
   }
@@ -112,8 +122,9 @@ class TodosController {
   toggleAllChecked(req, res, next) {
     try {
       this.todoService.toggleAllChecked();
-      res.status(200).send();
-    } catch(e) {
+      const allTodos = this.todoService.getAllTodos();
+      res.status(200).send(allTodos);
+    } catch (e) {
       next(e);
     }
   }

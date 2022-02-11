@@ -10,6 +10,9 @@ module.exports = class ApiError extends Error {
   static badRequest(message, errors = []) {
     return new ApiError(400, message, errors);
   }
+  static dataNotFound(message, errors = []) {
+    return new ApiError(404, message, errors);
+  }
 
   static serverError(message, errors = []) {
     return new ApiError(500, message, errors);
