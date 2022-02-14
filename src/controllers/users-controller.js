@@ -18,7 +18,7 @@ class UsersController {
         httpOnly: true,
       });
 
-      return res.json(userData);
+      return res.status(201).json(userData);
     } catch (e) {
       next(e);
     }
@@ -49,7 +49,7 @@ class UsersController {
         httpOnly: true,
       });
 
-      return res.json(userData);
+      return res.status(200).json(userData);
     } catch (e) {
       next(e);
     }
@@ -83,7 +83,7 @@ class UsersController {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
       });
-      return res.json(userData);
+      return res.status(200).json(userData);
     } catch (e) {
       next(e);
     }
