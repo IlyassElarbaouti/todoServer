@@ -28,7 +28,6 @@ class MailService {
   }
 
   sendActivationMail(to, link) {
-    
     try {
       this.transporter.sendMail(this.mailDetails(to, link));
     } catch (e) {
