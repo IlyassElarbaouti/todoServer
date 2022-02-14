@@ -17,12 +17,8 @@ class TodosService {
     return this.todosRepository.createTodo(newTodo);
   }
 
-  editLabel(id, label) {
-    return this.todosRepository.editLabel(id, label);
-  }
-
-  toggleTodo(id) {
-    return this.todosRepository.toggleTodo(id);
+  updateTodo(newTodo) {
+    return this.todosRepository.updateTodo(newTodo);
   }
 
   deleteTodo(id) {
@@ -32,6 +28,7 @@ class TodosService {
   deleteAllDone() {
     return this.todosRepository.deleteAllDone();
   }
+
   toggleAllChecked() {
     return this.todosRepository.toggleAllChecked();
   }

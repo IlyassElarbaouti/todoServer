@@ -34,11 +34,10 @@ app.get("/users", authMiddleware, usersController.getAllUsers);
 app.get("/todos/", authMiddleware, todosController.getAllTodos);
 app.get("/todos/:id", authMiddleware, todosController.getTodoById);
 app.post("/todos/", authMiddleware, todosController.createTodo);
-app.put("/todos/toggle/:id", authMiddleware, todosController.toggleTodo);
+app.put("/todos/update/:id", authMiddleware, todosController.updateTodo);
 app.delete("/todos/:id", authMiddleware, todosController.deleteTodo);
 app.delete("/todos/", authMiddleware, todosController.deleteAllDone);
 app.put("/todos/", authMiddleware, todosController.toggleAllChecked);
-app.put("/todos/label/:id", authMiddleware, todosController.editLabel);
 
 app.listen(port);
 

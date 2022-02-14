@@ -1,3 +1,5 @@
+const ApiError = require("../exceptions/api-error");
+
 class TodosRepository {
   constructor() {
     this.todos = [
@@ -20,7 +22,12 @@ class TodosRepository {
   }
 
   getTodoById(id) {
-    return this.todos.find((todo) => todo.id === id);
+    const targetedTodo = this.todos.find((todo) => todo.id === id);
+    if (targetedTodo) {
+      return targetedTodo;
+    } else {
+      throw ApiError.dataNotFound("todo not found");
+    }
   }
 
   createTodo(todo) {
@@ -29,34 +36,25 @@ class TodosRepository {
     return newTodo;
   }
 
-  editLabel(id, label) {
-    this.todos = this.todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          label,
-        };
-      } else {
-        return todo;
-      }
-    });
-  }
-
-  toggleTodo(id) {
-    this.todos = this.todos.map((todo) => {
-      if (todo.id === id) {
-        return {
-          ...todo,
-          checked: !todo.checked,
-        };
-      } else {
-        return todo;
-      }
-    });
+  updateTodo(newTodo) {
+    const targetedTodo = this.todos.find((todo) => todo.id === newTodo.id);
+    if (targetedTodo) {
+      this.todos = this.todos.map((todo) =>
+        todo.id === newTodo.id ? newTodo : todo
+      );
+      return this.todos.find((todo) => todo.id === newTodo.id);
+    } else {
+      throw ApiError.dataNotFound("todo not found");
+    }
   }
 
   deleteTodo(id) {
-    this.todos = this.todos.filter((todo) => todo.id !== id);
+    const targetedTodo = this.todos.find((todo) => todo.id === id);
+    if (targetedTodo) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
+    } else {
+      throw ApiError.dataNotFound("todo not found");
+    }
   }
 
   deleteAllDone() {
@@ -65,6 +63,7 @@ class TodosRepository {
 
   toggleAllChecked() {
     const isAllChecked = this.todos.every((todo) => todo.checked);
+
     this.todos.forEach((todo) => {
       todo.checked = !isAllChecked;
     });
