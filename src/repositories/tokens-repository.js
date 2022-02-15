@@ -1,8 +1,6 @@
-
-
 class TokensRepository {
   constructor() {
-    this.tokens = []
+    this.tokens = [];
   }
 }
 module.exports = new TokensRepository();
