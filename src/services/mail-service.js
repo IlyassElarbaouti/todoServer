@@ -6,8 +6,8 @@ class MailService {
     this.transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: "mrfixer59@gmail.com",
-        pass: "NoloveNopaine",
+        user: process.env.REACT_APP_EMAIL,
+        pass: process.env.REACT_APP_EMAIL_PASS,
       },
     });
     this.sendActivationMail = this.sendActivationMail.bind(this);
