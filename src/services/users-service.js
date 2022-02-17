@@ -61,12 +61,11 @@ class UserService {
     if (!user) {
       throw ApiError.badRequest("no user found");
     }
-    const isPassEquals = await bcrypt.compare(
+    const isPasswordEqual = await bcrypt.compare(
       String(password),
       String(user.password)
     );
-    console.log(isPassEquals)
-    if (!isPassEquals) {
+    if (!isPasswordEqual) {
       throw ApiError.badRequest("incorrect password");
     }
     const userDto = new UserDto(user);
