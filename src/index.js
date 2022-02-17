@@ -26,7 +26,7 @@ app.post(
 );
 
 app.get("/activate/:link", usersController.activate);
-app.get("/refresh", usersController.refresh);
+app.post("/refresh", usersController.refresh);
 app.post("/login", usersController.login);
 app.post("/logout", usersController.logout);
 app.get("/users", authMiddleware, usersController.getAllUsers);

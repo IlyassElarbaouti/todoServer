@@ -18,7 +18,7 @@ class TodosRepository {
   }
 
   getAllTodos() {
-    return this.todos;
+    return { todos:this.todos,nextId: this.nextId }
   }
 
   getTodoById(id) {

@@ -61,7 +61,7 @@ class TokensService {
 
   findToken(refreshToken) {
     const tokenData = tokensRepository.tokens.find(
-      (token) => token.refreshToken === refreshToken
+      (tokens) => tokens.refreshToken === refreshToken
     );
     return tokenData;
   }
