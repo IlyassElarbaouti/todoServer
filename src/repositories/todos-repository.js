@@ -63,10 +63,10 @@ class TodosRepository {
 
   toggleAllChecked() {
     const isAllChecked = this.todos.every((todo) => todo.checked);
-
-    this.todos.forEach((todo) => {
-      todo.checked = !isAllChecked;
-    });
+   this.todos= this.todos.map((todo) => {
+     todo.checked = !isAllChecked;
+     return todo
+   });
   }
 }
 const todosRepository = new TodosRepository();

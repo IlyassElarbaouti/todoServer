@@ -37,10 +37,10 @@ class UsersController {
     }
   }
 
-  login(req, res, next) {
+ async login(req, res, next) {
     try {
       const { email, password } = req.body;
-      const userData = usersService.login(email, password);
+      const userData = await usersService.login(email, password);
       if (!email || !password) {
         throw ApiError.badRequest("email and password are required");
       }
@@ -77,7 +77,7 @@ class UsersController {
 
   refresh(req, res, next) {
     try {
-      const { refreshToken } = req.cookies;
+      const { refreshToken } = req.body;
       const userData = usersService.refresh(refreshToken);
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,

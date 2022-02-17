@@ -56,15 +56,16 @@ class UserService {
     user.isActivated = true;
   }
 
-  login(email, password) {
+  async login(email, password) {
     const user = usersRepository.users.find((user) => user.email === email);
     if (!user) {
       throw ApiError.badRequest("no user found");
     }
-    const isPassEquals = bcrypt.compare(
+    const isPassEquals = await bcrypt.compare(
       String(password),
       String(user.password)
     );
+    console.log(isPassEquals)
     if (!isPassEquals) {
       throw ApiError.badRequest("incorrect password");
     }
