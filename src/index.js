@@ -8,7 +8,6 @@ const { body } = require("express-validator");
 const authMiddleware = require("./middleware/auth-middleware");
 require("dotenv").config();
 const todosController = require("./controllers/todos-controller");
-const todosService = require("./services/todos-service");
 const port = 9000;
 const app = express();
 
