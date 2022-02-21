@@ -44,6 +44,9 @@ class UsersController {
       if (!email || !password) {
         throw ApiError.badRequest("email and password are required");
       }
+       if (!userData) {
+         throw ApiError.badRequest("email or password are incorrect ");
+       }
       res.cookie("refreshToken", userData.refreshToken, {
         maxAge: 30 * 24 * 60 * 60 * 1000,
         httpOnly: true,
