@@ -86,17 +86,19 @@ class UserService {
 
   refresh(refreshToken) {
     if (!refreshToken) {
-      throw ApiError.UnauthorizedError();
+      throw ApiError.unauthorizedError();
     }
     const userData = tokenService.validateRefreshToken(refreshToken);
     const tokenFromRepo = tokenService.findToken(refreshToken);
     if (!userData || !tokenFromRepo) {
-      throw ApiError.UnauthorizedError();
+      throw ApiError.unauthorizedError();
     }
+    console.log(tokenService.tokensRepository.tokens)
     const user = usersRepository.users.find((user) => user.id === userData.id);
     const userDto = new UserDto(user);
     const tokens = tokenService.generateTokens({ ...userDto });
     tokenService.saveToken(userDto.id, tokens.refreshToken);
+    console.log(tokenService.tokensRepository.tokens);
     return { ...tokens, user: userDto };
   }
 }
